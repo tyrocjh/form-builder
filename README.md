@@ -14,7 +14,7 @@
 
 ```sh
 # 请先确保正确安装并使用了 element-ui
-npm install --save form-builder
+npm install --save tyro-form-builder
 ```
 
 ```html
@@ -23,7 +23,7 @@ npm install --save form-builder
 </template>
 
 <script>
-  import FormBuilder from 'form-builder'
+  import FormBuilder from 'tyro-form-builder'
 
   export default {
     components: {
