@@ -1,24 +1,104 @@
-# form-builder
+# 表单生成器 form-builder
 
-## Project setup
-```
-npm install
+## 介绍
+
+通过配置生成的表单，支持多种场景，具体请看文档 [https://tyrocjh.github.io/](https://tyrocjh.github.io/demo/basic/)
+
+#### 效果如下：
+
+![image](https://github.com/tyrocjh/form-builder/blob/main/src/assets/demo.png?raw=true)
+
+## 快速使用
+
+#### npm方式
+
+```sh
+# 请先确保正确安装并使用了 element-ui
+npm install --save form-builder
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+```html
+<template>
+  <form-builder :form-data="formData" />
+</template>
+
+<script>
+  import FormBuilder from 'form-builder'
+
+  export default {
+    components: {
+      FormBuilder,
+    },
+    data() {
+      return {
+        formData: {
+          list: [{
+            type: 'input',
+            model: 'name',
+            label: '名字'
+          }]
+        }
+      }
+    }
+  }
+</script>
 ```
 
-### Compiles and minifies for production
+#### script标签方式
+
+```html
+<!-- 请先确保正确安装并使用了 element-ui -->
+<script src="/dist/FormBuilder.umd.js"></script>
 ```
+
+```html
+<template>
+  <form-builder :form-data="formData" />
+</template>
+
+<script>
+  export default {
+    components: {
+      FormBuilder: window.FormBuilder.default
+    },
+    data() {
+      return {
+        formData: {
+          list: [{
+            type: 'input',
+            model: 'name',
+            label: '名字'
+          }]
+        }
+      }
+    }
+  }
+</script>
+```
+
+## 开发
+
+#### 开发组件
+
+```sh
+# 开发
+npm run dev
+
+# 打包
 npm run build
+
+# 发布npm
+npm run build
+npm login
+npm publish
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+#### 开发文档
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```sh
+# 开发
+npm run docs:dev
+
+# 打包
+npm run docs:build
+```

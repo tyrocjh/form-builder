@@ -1,28 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <form-builder 
+      ref="formBuilder" v-model="formModel" 
+      :form-data="formData" :remote-data="remoteData" 
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FormBuilder from './index'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FormBuilder
+  },
+  data() {
+    return {
+      formModel: {},
+      formData: {
+        config: {},
+        list: [{
+          type: 'input',
+          label: '输入框'
+        }]
+      },
+      remoteData: {}
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

@@ -1,14 +1,32 @@
 {
   "name": "form-builder",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "render form by config",
+  "author": "TyroCCC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tyrocjh/form-builder.git"
+  },
+  "homepage": "https://github.com/tyrocjh/form-builder",
+  "keywords": [
+    "vue",
+    "element ui",
+    "form",
+    "form build"
+  ],
+  "main": "dist/FormBuilder.common.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name FormBuilder src/index.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "async-validator": "^1.11.5",
     "core-js": "^3.6.5",
+    "element-ui": "^2.15.6",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -18,7 +36,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.8.2"
   },
   "eslintConfig": {
     "root": true,
