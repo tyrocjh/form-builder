@@ -1,6 +1,8 @@
 <template>
   <div class="form-builder-container">
-    <el-form ref="elForm" :model="model" v-bind="formConfig">
+    <el-form
+      ref="elForm" :model="model" v-bind="formConfig" 
+      @submit.native.prevent @keyup.enter.native="handleSubmit">
       <template v-for="(formItem, idx) in formItemList">
 
         <!-- 栅格 -->
@@ -35,6 +37,20 @@
         </template>
       </template>
 
+      <!-- 提交&重置按钮 -->
+      <el-form-item v-if="formActionConfig.showButtonGroup">
+        <el-button
+          v-if="formActionConfig.showSubmitButton" type="primary" 
+          :loading="submitLoading" @click="handleSubmit">
+          {{ formActionConfig.submitButtonText }}
+        </el-button>
+        <el-button
+          v-if="formActionConfig.showResetButton" @click="handleReset">
+          {{ formActionConfig.resetButtonText }}
+        </el-button>
+      </el-form-item>
+
+      <!-- actions插槽 -->
       <slot name="actions" />
     </el-form>
   </div>
@@ -46,6 +62,17 @@ import FormItem from './FormItem.vue'
 
 const GRID = 'grid'
 const GROUP = 'group'
+
+const FORM_ACTION_CONFIG = {
+  apiCall: null, // 是否默认调用接口（submitHandler会覆盖该方法）
+  showButtonGroup: false, // 是否显示按钮组（提交&重置）
+  showSubmitButton: true, // 是否显示提交按钮
+  showResetButton: true, // 是否显示重置按钮
+  submitButtonText: '提交',
+  resetButtonText: '重置',
+  submitHandler: null, // 覆盖默认submit方法
+  resetHandler: null, // 覆盖默认reset方法
+}
 
 export default {
   name: 'FormBuilder',
@@ -69,14 +96,20 @@ export default {
     remoteData: {
       type: Object,
       default: () => {}
+    },
+    formAction: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
     return {
       GRID,
       GROUP,
+      submitLoading: false,
       formConfig: {},
       formItemList: [],
+      formActionConfig: FORM_ACTION_CONFIG,
       model: {}
     }
   },
@@ -105,6 +138,7 @@ export default {
     setData() {
       this.formConfig = this.formData.config || {}
       this.formItemList = this.formData.list || []
+      this.formActionConfig = { ...this.formActionConfig, ...this.formAction }
       this.generateModel()
     },
     // 生成model
@@ -164,6 +198,36 @@ export default {
           this[item] = this.$refs.elForm[item]
         })
       })
+    },
+    // 点击submit
+    handleSubmit() {
+      if (!this.formActionConfig.showButtonGroup || !this.formActionConfig.showSubmitButton) return false
+
+      if (this.formActionConfig.submitHandler) {
+        this.formActionConfig.submitHandler()
+      } else {
+        this.getModel().then(async (data) => {
+          let res = null
+          if (this.formActionConfig.apiCall) {
+            this.submitLoading = true
+            res = await this.formActionConfig.apiCall(data)
+            this.submitLoading = false
+          }
+          this.$emit('handle-submit', res)
+        }).catch((err) => {
+          this.submitLoading = false
+          throw new Error(err)
+        })
+      }
+    },
+    // 点击reset
+    handleReset() {
+      if (this.formActionConfig.resetHandler) {
+        this.formActionConfig.resetHandler()
+      } else {
+        this.resetFields()
+        this.$emit('handle-reset')
+      }
     }
   }
 }
