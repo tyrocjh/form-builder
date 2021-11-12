@@ -12,6 +12,7 @@ module.exports = {
           '../demo/grid/',
           '../demo/group/',
           '../demo/model/',
+          '../demo/button/',
           '../demo/default/',
           '../demo/update-model/',
           '../demo/update-attribute/',
