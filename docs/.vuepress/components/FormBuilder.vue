@@ -1,6 +1,8 @@
 <template>
   <div class="form-builder-container">
-    <el-form ref="elForm" :model="model" v-bind="formConfig" @submit.native.prevent>
+    <el-form
+      ref="elForm" :model="model" v-bind="formConfig" 
+      @submit.native.prevent @keyup.enter.native="handleSubmit">
       <template v-for="(formItem, idx) in formItemList">
 
         <!-- 栅格 -->
@@ -199,14 +201,16 @@ export default {
     },
     // 点击submit
     handleSubmit() {
-      if (this.formAction.submitHandler) {
-        this.formAction.submitHandler()
+      if (!this.formActionConfig.showButtonGroup || !this.formActionConfig.showSubmitButton) return false
+
+      if (this.formActionConfig.submitHandler) {
+        this.formActionConfig.submitHandler()
       } else {
         this.getModel().then(async (data) => {
           let res = null
-          if (this.formAction.apiCall) {
+          if (this.formActionConfig.apiCall) {
             this.submitLoading = true
-            res = await this.formAction.apiCall(data)
+            res = await this.formActionConfig.apiCall(data)
             this.submitLoading = false
           }
           this.$emit('handle-submit', res)
@@ -218,8 +222,8 @@ export default {
     },
     // 点击reset
     handleReset() {
-      if (this.formAction.resetHandler) {
-        this.formAction.resetHandler()
+      if (this.formActionConfig.resetHandler) {
+        this.formActionConfig.resetHandler()
       } else {
         this.resetFields()
         this.$emit('handle-reset')
