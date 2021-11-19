@@ -2,7 +2,7 @@
 
 ## 介绍
 
-基于element-ui实现，通过配置生成的表单，支持多种场景，具体请看文档 [https://tyrocjh.github.io/](https://tyrocjh.github.io/demo/basic/)
+基于element-ui实现，通过配置生成的表单，支持多种场景，具体请看文档 [https://tyrocjh.github.io/](https://tyrocjh.github.io/)
 
 #### 效果如下：
 
